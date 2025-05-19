@@ -138,4 +138,15 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #1565c0; }
+    background-color: #1565c0; 
+}
+.team-avatar {
+    width: 64px;
+    /* Ukuran kecil dan konsisten */
+    height: 64px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 2px solid #dee2e6;
+    margin: 0 auto;
+    display: block; 
+}
