@@ -94,3 +94,48 @@ body {
     border-radius: 50%;
     object-fit: cover;
     cursor: pointer; }
+
+
+
+.hero {
+  padding: 100px 0;
+  background-color: #e3f2fd;
+}
+
+.hero h1 {
+  font-weight: 700;
+}
+
+.hero-img {
+  max-height: 360px;
+}
+
+.features {
+  background-color: #f8f9fa;
+}
+
+.feature-box {
+  background-color: #ffffff;
+}
+
+.cta {
+  background-color: #1976d2;
+}
+
+
+.bg-info {
+    background: linear-gradient(135deg, #64b5f6, #1976d2);
+}
+
+.form-control:focus {
+    border-color: #1976d2;
+    box-shadow: 0 0 0 0.2rem rgba(25, 118, 210, 0.25);
+}
+
+.btn-primary {
+    background-color: #1976d2;
+    border: none;
+}
+
+.btn-primary:hover {
+    background-color: #1565c0; }
