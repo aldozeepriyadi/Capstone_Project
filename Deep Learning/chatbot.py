@@ -66,3 +66,7 @@ def chat_endpoint(input: UserQuery):
     })
 
     return {"reply": result.content}
+
+if __name__ == "__main__":
+    import uvicorn
+    uvicorn.run("chatbot:app", host="127.0.0.1", port=8000, reload=True)
