@@ -2,7 +2,6 @@ body {
     background-color: #f1f3f5;
     font-family: 'Segoe UI', sans-serif;
 }
-
 .chat-sidebar {
     background-color: #ffffff;
     border-right: 1px solid #dee2e6;
@@ -88,38 +87,40 @@ body {
     border-top: 1px solid #dee2e6;
     background-color: #ffffff;
 }
+
 .avatar-top {
     width: 36px;
     height: 36px;
     border-radius: 50%;
     object-fit: cover;
-    cursor: pointer; }
+    cursor: pointer;
+}
 
 
 
 .hero {
-  padding: 100px 0;
-  background-color: #e3f2fd;
+    padding: 100px 0;
+    background-color: #e3f2fd;
 }
 
 .hero h1 {
-  font-weight: 700;
+    font-weight: 700;
 }
 
 .hero-img {
-  max-height: 360px;
+    max-height: 360px;
 }
 
 .features {
-  background-color: #f8f9fa;
+    background-color: #f8f9fa;
 }
 
 .feature-box {
-  background-color: #ffffff;
+    background-color: #ffffff;
 }
 
 .cta {
-  background-color: #1976d2;
+    background-color: #1976d2;
 }
 
 
@@ -138,8 +139,9 @@ body {
 }
 
 .btn-primary:hover {
-    background-color: #1565c0; 
+    background-color: #1565c0;
 }
+
 .team-avatar {
     width: 64px;
     /* Ukuran kecil dan konsisten */
@@ -148,5 +150,5 @@ body {
     border-radius: 50%;
     border: 2px solid #dee2e6;
     margin: 0 auto;
-    display: block; 
+    display: block;
 }

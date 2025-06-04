@@ -23,7 +23,9 @@
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item"><a href="#features" class="nav-link">Fitur</a></li>
                     <li class="nav-item"><a href="#about-team" class="nav-link">Tentang Kami</a></li>
-                    <li class="nav-item"><a href="login.html" class="nav-link">Login</a></li>           </ul>
+                    <li class="nav-item"><button style="margin-left: 5px; background-color: #1976d2; font-weight: 600; border: none; border-radius: 10px;"><a href="login.php" style="color: #ffffff;" class="nav-link" >Login</a></button></li>
+                    <li class="nav-item"><button style="margin-left: 5px; background-color: #1976d2; font-weight: 600; border: none; border-radius: 10px;" class="btn-navbar"><a href="registrasi.html" class="nav-link" style="color: #ffffff;">Registrasi</a></button></li>
+                </ul>
             </div>
         </div>
     </nav>
@@ -105,7 +107,7 @@
                 <div class="col-md-3 d-flex" data-aos="fade-up" data-aos-delay="50">
                     <div class="card border-0 shadow-sm  h-100 w-100 d-flex flex-column justify-content-between">
                         <div class="card-body text-center"">
-                            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 2">
+                            <img src=" https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 2">
                             <h5 class="card-title mb-1">Agustinus Alvin Wicaksono</h5>
                             <p class="text-muted small">UI/UX Designer</p>
                         </div>
@@ -115,7 +117,7 @@
                 <div class="col-md-3 d-flex" data-aos="fade-up" data-aos-delay="50">
                     <div class="card border-0 shadow-sm h-100 w-100 d-flex flex-column justify-content-between">
                         <div class="card-body text-center"">
-                            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 3">
+                            <img src=" https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 3">
                             <h5 class="card-title mb-1">Putri Oktavianti</h5>
                             <p class="text-muted small">Frontend Developer</p>
                         </div>
@@ -125,7 +127,7 @@
                 <div class="col-md-3 d-flex" data-aos="fade-up" data-aos-delay="50">
                     <div class="card border-0 shadow-sm h-100 w-100 d-flex flex-column justify-content-between">
                         <div class="card-body text-center"">
-                            <img src="https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 4">
+                            <img src=" https://via.placeholder.com/100" class="rounded-circle mb-3 team-avatar" alt="Member 4">
                             <h5 class="card-title mb-1">Rizki Wahyu Nurcahyani Fajarwati</h5>
                             <p class="text-muted small">Data Engineer</p>
                         </div>

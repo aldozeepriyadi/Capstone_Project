@@ -17,10 +17,10 @@ if (mysqli_num_rows($result) == 1) {
 
         echo "<script>alert('Login berhasil!'); window.location.href='/Capstone_project/Web/chatbot.php';</script>";
     } else {
-        echo "<script>alert('Password salah!'); window.location.href='login.php';</script>";
+        echo "<script>alert('Password salah!'); window.location.href='/Capstone_project/Web/login.php';</script>";
     }
 } else {
-    echo "<script>alert('Username atau email tidak ditemukan!'); window.location.href='login.php';</script>";
+    echo "<script>alert('Username atau email tidak ditemukan!'); window.location.href='/Capstone_project/Web/login.php';</script>";
 }
 
 mysqli_close($conn);

@@ -1,12 +1,12 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "projek_capstonelaskarai";
+$host = 'localhost';
+$db = 'projek_capstonelaskarai';
+$user = 'root'; // atau user database kamu
+$pass = ''; // password database kamu
 
-$conn = new mysqli($host, $user, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+try {
+    $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Koneksi gagal: " . $e->getMessage());
 }
-echo "Koneksi berhasil!";

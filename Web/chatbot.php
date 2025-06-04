@@ -14,7 +14,6 @@
 
     <div class="container-fluid">
         <div class="row">
-
             <!-- Sidebar Desktop -->
             <div class="col-md-3 chat-sidebar d-none d-md-block">
                 <!-- Header Sidebar -->
@@ -66,41 +65,14 @@
 
                 <!-- Chat Container -->
                 <main id="chat-container">
-                    <!-- Riwayat statis -->
-                    <div class="message-row bot">
-                        <div class="message-role">Bot</div>
-                        <div class="message-bubble">Hai! Aku di sini untuk mendengarkanmu. Apa yang kamu rasakan hari
-                            ini?</div>
-                    </div>
-
-                    <div class="message-row user">
-                        <div class="message-role">You</div>
-                        <div class="message-bubble">Aku merasa cemas terus-menerus tanpa sebab.</div>
-                    </div>
-
-                    <div class="message-row bot">
-                        <div class="message-role">Bot</div>
-                        <div class="message-bubble">Perasaan cemas bisa muncul kapan saja. Apa kamu tahu kapan terakhir
-                            kamu merasa tenang?</div>
-                    </div>
-
-                    <div class="message-row user">
-                        <div class="message-role">You</div>
-                        <div class="message-bubble">Kayaknya udah lama banget... semenjak masalah keluarga muncul.</div>
-                    </div>
-
-                    <div class="message-row bot">
-                        <div class="message-role">Bot</div>
-                        <div class="message-bubble">Terima kasih telah membagikan hal itu. Aku tahu itu tidak mudah.
-                            Kita bisa bicara lebih lanjut kapan pun kamu siap.</div>
-                    </div>
+                    
                 </main>
 
                 <!-- Footer -->
                 <footer class="chat-footer">
                     <form id="chat-form" class="d-flex gap-2">
-                        <input type="text" id="user-input" class="form-control"
-                            placeholder="Tulis perasaanmu di sini..." autocomplete="off" required />
+                        <input type="text" name="question" id="question" class="form-control"
+                            placeholder="Tulis perasaanmu di sini..." required />
                         <button type="submit" class="btn btn-primary">Kirim</button>
                     </form>
                 </footer>
@@ -127,6 +99,54 @@
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script src="script.js"></script>
+    <script>
+        document.getElementById("chat-form").addEventListener("submit", function(e) {
+            e.preventDefault();
+            const input = document.getElementById("question");
+            const message = input.value;
+
+            // pertanyaan user
+            const container = document.getElementById("chat-container");
+            container.innerHTML += `
+                                    <div class="message-row user">
+                                        <div class="message-role">You</div>
+                                        <div class="message-bubble">${message}</div>
+                                    </div>
+                                  `;
+
+            // Kirim ke backend
+            fetch("database/proses_chatbot.php", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    },
+                    body: "question=" + encodeURIComponent(message)
+                })
+                .then(res => {
+                    if (!res.ok) throw new Error("Gagal dari server");
+                    return res.json();
+                })
+                .then(data => {
+                    container.innerHTML += `
+        <div class="message-row bot">
+            <div class="message-role">Bot</div>
+            <div class="message-bubble">${data.response}</div>
+        </div>
+    `;
+                    input.value = "";
+                })
+                .catch(err => {
+                    container.innerHTML += `
+        <div class="message-row bot">
+            <div class="message-role">Bot</div>
+            <div class="message-bubble">Gagal mendapatkan respons. ${err.message}</div>
+        </div>
+    `;
+                });
+
+        });
+    </script>
+
 </body>
 
 </html>

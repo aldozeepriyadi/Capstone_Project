@@ -11,7 +11,7 @@ $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
 $cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email' OR username='$username'");
 if (mysqli_num_rows($cek) > 0) {
-    echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='register.php';</script>";
+    echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='/Capstone_project/Web/register.php';</script>";
     exit;
 }
 
