@@ -1,8 +1,8 @@
 <?php
 $host = 'localhost';
 $db = 'projek_capstonelaskarai';
-$user = 'root'; // atau user database kamu
-$pass = ''; // password database kamu
+$user = 'root'; 
+$pass = '';
 
 try {
     $pdo = new PDO("mysql:host=$host;dbname=$db;charset=utf8", $user, $pass);
