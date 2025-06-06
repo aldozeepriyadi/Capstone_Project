@@ -25,7 +25,6 @@ body {
     cursor: pointer;
     transition: background 0.2s ease;
     position: relative;
-
 }
 
 .chat-item .dropdown-menu {
@@ -36,6 +35,7 @@ body {
 }
 
 .chat-history-wrapper {
+    min-height: 80vh;
     overflow-y: auto;
     overflow-x: visible;
     position: relative;
