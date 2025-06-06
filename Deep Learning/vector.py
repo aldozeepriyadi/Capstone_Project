@@ -2,9 +2,13 @@ import pandas as pd
 from langchain_core.documents import Document
 from langchain_chroma import Chroma
 from langchain_community.embeddings import FastEmbedEmbeddings
+import os
 
 # Load dataset
-df = pd.read_csv("Deep Learning/dataset/Combined Data.csv")
+base_path = os.path.dirname(__file__)
+csv_path = os.path.join(base_path, 'dataset', 'Combined Data.csv')
+
+df = pd.read_csv(csv_path)
 
 # Hapus baris dengan nilai NaN pada kolom 'statement' atau 'status'
 df = df.dropna(subset=["statement", "status"])
