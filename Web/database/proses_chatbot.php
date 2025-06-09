@@ -36,11 +36,22 @@ if (!$responseData || !isset($responseData['reply'])) {
 
 $reply = $responseData['reply'] ?? 'Maaf, tidak bisa memproses saat ini.';
 
+if ($topic_id == null && $user_id != null) {
+    // Insert topic baru
+    $stmt = $pdo->prepare("INSERT INTO chat_topics (user_id, title) VALUES (?, ?)");
+    $stmt->execute([$user_id, $question]);
+
+    // Ambil id_topic yang baru saja dimasukkan
+    $topic_id = $pdo->lastInsertId(); // Ambil ID terakhir yang dimasukkan
+}
+
 // Jika user login, simpan ke database
 if ($user_id && $topic_id) {
+    // Insert pesan dari user
     $stmt = $pdo->prepare("INSERT INTO messages (topic_id, user_id, sender, message) VALUES (?, ?, 'user', ?)");
     $stmt->execute([$topic_id, $user_id, $question]);
 
+    // Insert balasan dari bot
     $stmt = $pdo->prepare("INSERT INTO messages (topic_id, user_id, sender, message) VALUES (?, ?, 'bot', ?)");
     $stmt->execute([$topic_id, $user_id, $reply]);
 }

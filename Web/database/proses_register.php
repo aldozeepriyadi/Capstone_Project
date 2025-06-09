@@ -15,7 +15,7 @@ try {
     $count = $stmt->fetchColumn();
 
     if ($count > 0) {
-        echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='register.php';</script>";
+        echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='../registrasi.php';</script>";
         exit;
     }
 
@@ -28,7 +28,7 @@ try {
         'password' => $hashed_password
     ]);
 
-    echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location.href='login.php';</script>";
+    echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location.href='../login.php';</script>";
 } catch (PDOException $e) {
     echo "Gagal registrasi: " . $e->getMessage();
 }
