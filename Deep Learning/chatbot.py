@@ -1,4 +1,5 @@
 from fastapi import FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain.prompts import PromptTemplate
@@ -34,6 +35,14 @@ chain = prompt | model
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Ganti "*" ke domain tertentu kalau ingin lebih aman
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 class UserQuery(BaseModel):
     question: str
 
@@ -41,10 +50,14 @@ class UserQuery(BaseModel):
 def chat_endpoint(input: UserQuery):
     question = input.question
     results = retreiver.invoke(question)
-    context = "\n".join([doc.metadata["statement"] for doc in results])
+    for i, doc in enumerate(results):
+        print(f"Document {i} metadata:", doc.metadata)
+    # context = "\n".join([doc.metadata["statement"] for doc in results])
+    context = "\n".join(doc.metadata.get("statement", "") for doc in results if doc.metadata.get("statement"))
     tag_counts = {}
     for doc in results:
-        t = doc.metadata["status"]
+        t = doc.metadata.get("status", "unknown")
+        # t = doc.metadata["status"]
         tag_counts[t] = tag_counts.get(t, 0) + 1
     tag = max(tag_counts, key=tag_counts.get)
     result = chain.invoke({

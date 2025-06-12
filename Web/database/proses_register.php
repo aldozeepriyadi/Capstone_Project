@@ -1,7 +1,6 @@
 <?php
-include 'connect.php'; // pastikan file ini berisi koneksi ke DB
+include 'connect.php';
 
-// Ambil data dari form
 $name     = $_POST['name'];
 $email    = $_POST['email'];
 $username = $_POST['username'];
@@ -9,17 +8,27 @@ $password = $_POST['password'];
 
 $hashed_password = password_hash($password, PASSWORD_DEFAULT);
 
-$cek = mysqli_query($conn, "SELECT * FROM users WHERE email='$email' OR username='$username'");
-if (mysqli_num_rows($cek) > 0) {
-    echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='register.php';</script>";
-    exit;
-}
+try {
+    // Cek apakah email atau username sudah ada
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM users WHERE email = :email OR username = :username");
+    $stmt->execute(['email' => $email, 'username' => $username]);
+    $count = $stmt->fetchColumn();
 
-$sql = "INSERT INTO users (name, email, username, password, role) VALUES ('$name', '$email', '$username', '$hashed_password', 'user')";
-if (mysqli_query($conn, $sql)) {
-    echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location.href='/Capstone_project/Web/login.php';</script>";
-} else {
-    echo "Gagal registrasi: " . mysqli_error($conn);
-}
+    if ($count > 0) {
+        echo "<script>alert('Email atau username sudah digunakan!'); window.location.href='../registrasi.php';</script>";
+        exit;
+    }
 
-mysqli_close($conn);
+    // Insert data ke tabel users
+    $stmt = $pdo->prepare("INSERT INTO users (name, email, username, password, role) VALUES (:name, :email, :username, :password, 'user')");
+    $stmt->execute([
+        'name'     => $name,
+        'email'    => $email,
+        'username' => $username,
+        'password' => $hashed_password
+    ]);
+
+    echo "<script>alert('Registrasi berhasil! Silakan login.'); window.location.href='../login.php';</script>";
+} catch (PDOException $e) {
+    echo "Gagal registrasi: " . $e->getMessage();
+}

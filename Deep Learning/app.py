@@ -9,17 +9,23 @@ from nltk.corpus import stopwords
 from deep_translator import GoogleTranslator
 from nltk.stem import WordNetLemmatizer
 import nltk
+import os
 
 nltk.download('stopwords')
 nltk.download('wordnet')
 
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
-with open("Deep Learning/model/tokenizer.pkl", "rb") as f:
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+tokenizer_path = os.path.join(BASE_DIR, "model", "tokenizer.pkl")
+label_encoder_path = os.path.join(BASE_DIR, "model", "label_encoder.pkl")
+model_path = os.path.join(BASE_DIR, "model", "model_mental_health_finetuned.h5")
+
+with open(tokenizer_path, "rb") as f:
     tokenizer = pickle.load(f)
-with open("Deep Learning/model/label_encoder.pkl", "rb") as f:
+with open(label_encoder_path, "rb") as f:
     encoder = pickle.load(f)
-model = load_model("Deep Learning/model/model_mental_health_finetuned.h5")
+model = load_model(model_path)
 
 stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()

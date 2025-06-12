@@ -1,12 +1,14 @@
 <?php
-$host = "localhost";
-$user = "root";
-$password = "";
-$dbname = "projek_capstonelaskarai";
+$host = 'localhost';
+$db = 'projek_capstonelaskarai';
+$user = 'root'; 
+$pass = '';
+$port = '3307';  // Menambahkan port
 
-$conn = new mysqli($host, $user, $password, $dbname);
-
-if ($conn->connect_error) {
-    die("Koneksi gagal: " . $conn->connect_error);
+try {
+    // Menambahkan port pada string DSN
+    $pdo = new PDO("mysql:host=$host;port=$port;dbname=$db;charset=utf8", $user, $pass);
+    $pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+} catch (PDOException $e) {
+    die("Koneksi gagal: " . $e->getMessage());
 }
-echo "Koneksi berhasil!";
