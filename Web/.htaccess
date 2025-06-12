@@ -1,0 +1,18 @@
+# Mengaktifkan URL rewriting
+RewriteEngine On
+
+# Pengaturan halaman default yang akan ditampilkan
+DirectoryIndex landing_page.php
+
+# Jika pengunjung mengakses root domain (http://localhost/ atau http://ip_address/)
+# Arahkan ke halaman default
+RewriteCond %{REQUEST_URI} ^/$
+RewriteRule ^$ /landing_page.php [L]
+
+# Jika pengunjung mengakses subdirektori /ip/ (http://localhost/ip/ atau http://ip_address/ip/)
+# Arahkan ke halaman default di dalam subdirektori /ip/
+RewriteCond %{REQUEST_URI} ^/ip/$
+RewriteRule ^$ /landing_page.php [L]
+
+# Menangani error 404 jika URL tidak ditemukan
+ErrorDocument 404 /404.php

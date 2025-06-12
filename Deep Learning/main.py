@@ -17,4 +17,4 @@ main_app.mount("/chat", chatbot_app)
 # Jalankan dengan: uvicorn main:main_app --reload --port 8080
 if __name__ == "__main__":
     import uvicorn
-    uvicorn.run("main:main_app", host="127.0.0.1", port=8080, reload=True)
+    uvicorn.run("main:main_app", host="127.0.0.1", port=8080, reload=False)
