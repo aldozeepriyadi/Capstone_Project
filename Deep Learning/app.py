@@ -1,31 +1,33 @@
 import re
+import os
 import pickle
+import nltk
 import numpy as np
 from fastapi import FastAPI
 from pydantic import BaseModel
 from tensorflow.keras.models import load_model
 from tensorflow.keras.preprocessing.sequence import pad_sequences
 from nltk.corpus import stopwords
-from deep_translator import GoogleTranslator
 from nltk.stem import WordNetLemmatizer
-import nltk
-import os
+from deep_translator import GoogleTranslator
+import tensorflow as tf
 
-nltk.download('stopwords')
-nltk.download('wordnet')
+# ───── Inisialisasi device GPU / CPU ─────
+physical_gpus = tf.config.list_physical_devices('GPU')
+if physical_gpus:
+    try:
+        for gpu in physical_gpus:
+            tf.config.experimental.set_memory_growth(gpu, True)
+        DEVICE = "/GPU:0"
+    except:
+        DEVICE = "/CPU:0"
+else:
+    DEVICE = "/CPU:0"
+print(f"🚀 Using device: {DEVICE}")
 
-app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
-
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-tokenizer_path = os.path.join(BASE_DIR, "model", "tokenizer.pkl")
-label_encoder_path = os.path.join(BASE_DIR, "model", "label_encoder.pkl")
-model_path = os.path.join(BASE_DIR, "model", "model_mental_health_finetuned.h5")
-
-with open(tokenizer_path, "rb") as f:
-    tokenizer = pickle.load(f)
-with open(label_encoder_path, "rb") as f:
-    encoder = pickle.load(f)
-model = load_model(model_path)
+# ───── NLP resource ─────
+nltk.download("stopwords")
+nltk.download("wordnet")
 
 stop_words = set(stopwords.words("english"))
 lemmatizer = WordNetLemmatizer()
@@ -40,33 +42,54 @@ slang_dict = {
     "tired": "fatigued or exhausted"
 }
 
-def full_preprocess(text):
+# ───── Preprocessing function ─────
+def full_preprocess(text: str) -> str:
     if not isinstance(text, str):
         return ""
     try:
         text = GoogleTranslator(source='auto', target='en').translate(text)
-    except:
+    except Exception:
         pass
     text = text.lower()
     text = re.sub(r"http\S+|www\S+|@\S+|#\S+", "", text)
     text = re.sub(r"[^a-z\s]", "", text)
-    text = ' '.join([slang_dict.get(word, word) for word in text.split()])
-    words = text.split()
-    cleaned_words = [lemmatizer.lemmatize(word) for word in words if word not in stop_words]
+    text = ' '.join(slang_dict.get(word, word) for word in text.split())
+    cleaned_words = [
+        lemmatizer.lemmatize(word) for word in text.split() if word not in stop_words
+    ]
     return ' '.join(cleaned_words)
 
-def predict_sentiment(text):
+# ───── Load model dan artefak ─────
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+tokenizer_path = os.path.join(BASE_DIR, "model", "tokenizer.pkl")
+label_encoder_path = os.path.join(BASE_DIR, "model", "label_encoder.pkl")
+model_path = os.path.join(BASE_DIR, "model", "model_mental_health_finetuned.h5")
+
+with open(tokenizer_path, "rb") as f:
+    tokenizer = pickle.load(f)
+with open(label_encoder_path, "rb") as f:
+    encoder = pickle.load(f)
+
+with tf.device(DEVICE):
+    model = load_model(model_path)
+
+# ───── Prediction function ─────
+def predict_sentiment(text: str) -> str:
     cleaned = full_preprocess(text)
     seq = tokenizer.texts_to_sequences([cleaned])
     padded = pad_sequences(seq, maxlen=100, padding='post')
-    pred = model.predict(padded, verbose=0)
+    with tf.device(DEVICE):
+        pred = model.predict(padded, verbose=0)
     label = encoder.inverse_transform([np.argmax(pred)])[0]
     return label
+
+# ───── FastAPI setup ─────
+app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 
 class InputText(BaseModel):
     text: str
 
 @app.post("/")
-async def predict(request: InputText):
+async def classify_emotion(request: InputText):
     result = predict_sentiment(request.text)
     return {"label": result}
